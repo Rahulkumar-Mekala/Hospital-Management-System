@@ -21,8 +21,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             """, nativeQuery = true)
     String findLastPatientCode();
     
-System.out.println(patient.getInsurances());
-System.out.println(patient.getInsurances().size());
+
 	}
 
 

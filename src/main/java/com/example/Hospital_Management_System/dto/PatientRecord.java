@@ -40,8 +40,7 @@ public static PatientRecord from (com.example.Hospital_Management_System.entity.
 	             a.getBloodGroup(),
 	             a.getOccupation(),
 	             a.getStatus(),
-				 System.out.println(patient.getInsurances());
-System.out.println(patient.getInsurances().size());
+				 
 	             a.getAddresses() == null ? List.of() :
 	                 a.getAddresses().stream().map(PatientAddressResponse::from).collect(Collectors.toList()),
 

@@ -85,8 +85,7 @@ public class PatientServiceImpl implements PatientService {
 		return patientRepository.save(patient) ;
 		
 	}
-System.out.println(patient.getInsurances());
-System.out.println(patient.getInsurances().size());
+
 	@Override
 	public List<Patient> getAllPatients() {
 		// TODO Auto-generated method stub
