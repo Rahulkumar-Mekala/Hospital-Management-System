@@ -76,6 +76,10 @@ public class PatientServiceImpl implements PatientService {
 		        identification.setBackImageUrl(backUrl);
 		    });
 		}
+
+		if (patient.getInsurancestatus() != null) {
+		    patient.getInsurancestatus().forEach(insurance -> insurance.setPatient(patient));
+		}
 		 patient.setPatientCode(generatePatientCode());
 		
 		return patientRepository.save(patient) ;
