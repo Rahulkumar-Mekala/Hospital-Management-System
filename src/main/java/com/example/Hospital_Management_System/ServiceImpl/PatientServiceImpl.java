@@ -12,7 +12,7 @@ import com.example.Hospital_Management_System.ImageStorage.SupabaseStorageServic
 import com.example.Hospital_Management_System.Repository.PatientContactRepository;
 import com.example.Hospital_Management_System.Repository.PatientRepository;
 import com.example.Hospital_Management_System.Service.PatientService;
-import com.example.Hospital_Management_System.dto.PatientRecord;
+
 import com.example.Hospital_Management_System.entity.Patient;
 import com.example.Hospital_Management_System.entity.PatientAddress;
 import com.example.Hospital_Management_System.entity.PatientContact;
@@ -53,6 +53,7 @@ public class PatientServiceImpl implements PatientService {
 		}
 		if (patient.getContacts() != null) {
 			for (PatientContact contact : patient.getContacts()) {
+				contact.setPatient(patient);
 	            if (contactRepository.existsByPrimarycontactnumber(contact.getPrimarycontactnumber())) {
 	                throw new RuntimeException(
 	                    " Primary Phone number already exists: " + contact.getPrimarycontactnumber());
@@ -262,6 +263,7 @@ public class PatientServiceImpl implements PatientService {
 		        }
 		    }
 		 patientRepository.delete(patient);
+	
 	}
 	
 	
