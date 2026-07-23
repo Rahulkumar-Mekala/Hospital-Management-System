@@ -1,12 +1,16 @@
 package com.example.Hospital_Management_System.Cotroller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.Hospital_Management_System.ServiceImpl.PatientServiceImpl;
@@ -43,30 +47,67 @@ public class PatientController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PatientRecord savePatient(
+    public ResponseEntity<?> savePatient(
             @RequestPart("patient") Patient patient,
             @RequestPart("frontImage") MultipartFile frontImage,
             @RequestPart("backImage") MultipartFile backImage) throws IOException {
+   try {
+        Patient savedPatient = patientService.savePatient(patient, frontImage, backImage);
+        return ResponseEntity.ok(PatientRecord.from(savedPatient));
 
-        return PatientRecord.from(
-                patientService.savePatient(patient, frontImage, backImage));
+    } catch (RuntimeException ex) {
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("status", HttpStatus.BAD_REQUEST.value());
+        error.put("error", "Bad Request");
+        error.put("message", ex.getMessage());
+
+        return ResponseEntity.badRequest().body(error);
+
+    } catch (IOException ex) {
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.put("error", "Internal Server Error");
+        error.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
     }
        
     @PostMapping("/bulk")
-    public List<PatientRecord> saveAllPatients(@RequestBody List<Patient> patients) {
-        return patientService.saveAllPatient(patients)
-                .stream()
-                .map(PatientRecord::from)
-                .collect(Collectors.toList());
+    public ResponseEntity<?> saveAllPatients(@RequestBody List<Patient> patients) {
+        try {
+            List<Patient> savedPatients = patientService.saveAllPatient(patients);
+            List<PatientRecord> patientRecords = savedPatients.stream()
+                    .map(PatientRecord::from)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(patientRecords);
+        } catch (RuntimeException ex) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("status", HttpStatus.BAD_REQUEST.value());
+            error.put("error", "Bad Request");
+            error.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
     }
 
     @PutMapping("/{id}")
-    public PatientRecord updatePatient(@PathVariable UUID id, @RequestBody Patient patient) {
-        return PatientRecord.from(patientService.updatePatient(id, patient));
+    public ResponseEntity<?> updatePatient(@PathVariable UUID id, @RequestBody Patient patient) {
+        try {
+            Patient updatedPatient = patientService.updatePatient(id, patient);
+            return ResponseEntity.ok(PatientRecord.from(updatedPatient));
+        } catch (RuntimeException ex) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("status", HttpStatus.BAD_REQUEST.value());
+            error.put("error", "Bad Request");
+            error.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
     }
 
     @PutMapping( value = "/update/{patientCode}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PatientRecord updatePatientByCode(@PathVariable String patientCode,
+    public ResponseEntity<?> updatePatientByCode(@PathVariable String patientCode,
     		 @RequestPart("patient") Patient patient,
 
              @RequestPart(value = "frontImage", required = false) MultipartFile frontImage,
@@ -74,7 +115,7 @@ public class PatientController {
     	
     	Patient updatedPatient = patientService.updatePatientforcode(patientCode,patient,  frontImage,  backImage);
 
-    	 return PatientRecord.from(updatedPatient);
+    	 return ResponseEntity.ok(PatientRecord.from(updatedPatient));
     }
 
     @DeleteMapping("/{id}")
@@ -84,8 +125,8 @@ public class PatientController {
     }
 
     @DeleteMapping("/delete/{patientCode}")
-    public String deletePatientByPatientCode(@PathVariable String patientCode) throws IOException {
+    public ResponseEntity<?> deletePatientByPatientCode(@PathVariable String patientCode) throws IOException {
     	patientService.deletePatient(patientCode);
-        return "Patient deleted successfully";
+        return ResponseEntity.ok("Patient deleted successfully");
     }
 }
