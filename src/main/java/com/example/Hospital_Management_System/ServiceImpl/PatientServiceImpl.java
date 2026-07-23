@@ -77,14 +77,16 @@ public class PatientServiceImpl implements PatientService {
 		    });
 		}
 
-		if (patient.getInsurancestatus() != null) {
-		    patient.getInsurancestatus().forEach(insurance -> insurance.setPatient(patient));
+		if (patient.getInsurances() != null) {
+		    patient.getInsurances().forEach(insurance -> insurance.setPatient(patient));
 		}
 		 patient.setPatientCode(generatePatientCode());
 		
 		return patientRepository.save(patient) ;
+		
 	}
-
+System.out.println(patient.getInsurances());
+System.out.println(patient.getInsurances().size());
 	@Override
 	public List<Patient> getAllPatients() {
 		// TODO Auto-generated method stub

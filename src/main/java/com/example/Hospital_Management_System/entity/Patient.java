@@ -75,7 +75,7 @@ public class Patient {
     private List<Patient_Identification> identifications = new ArrayList<>();
   
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true) 
-    private List<PatientInsurance> insurancestatus = new ArrayList<>();
+    private List<PatientInsurance> insurances = new ArrayList<>();
    
     @PrePersist
     public void prePersist() {

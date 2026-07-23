@@ -40,6 +40,8 @@ public static PatientRecord from (com.example.Hospital_Management_System.entity.
 	             a.getBloodGroup(),
 	             a.getOccupation(),
 	             a.getStatus(),
+				 System.out.println(patient.getInsurances());
+System.out.println(patient.getInsurances().size());
 	             a.getAddresses() == null ? List.of() :
 	                 a.getAddresses().stream().map(PatientAddressResponse::from).collect(Collectors.toList()),
 
@@ -48,8 +50,8 @@ public static PatientRecord from (com.example.Hospital_Management_System.entity.
 	             a.getIdentifications() == null ? List.of() :
 	                 a.getIdentifications().stream().map(PatientIdentificationRecord::from).collect(Collectors.toList()),
 
-	                 a.getInsurancestatus() == null ? List.of() :
-		                 a.getInsurancestatus().stream().map(Patient_Insurance::from).collect(Collectors.toList())
+	                 a.getInsurances() == null ? List.of() :
+		                 a.getInsurances().stream().map(Patient_Insurance::from).collect(Collectors.toList())
 
 	        );
   }
