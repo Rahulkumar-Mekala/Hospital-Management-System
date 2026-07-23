@@ -178,10 +178,21 @@ public class PatientServiceImpl implements PatientService {
 	    if (patient.getContacts() != null) {
 	        existingPatient.getContacts().clear();
 
-	        for (PatientContact contact : patient.getContacts()) {
-	            contact.setPatient(existingPatient);
-	            existingPatient.getContacts().add(contact);
+	        if (patient.getContacts() != null) {
+			for (PatientContact contact : patient.getContacts()) {
+				contact.setPatient(patient);
+	            if (contactRepository.existsByPrimarycontactnumber(contact.getPrimarycontactnumber())) {
+	                throw new RuntimeException(
+	                    " Primary Phone number already exists: " + contact.getPrimarycontactnumber());
+	            }
+	            for (PatientContact contact2 : patient.getContacts()) {
+	                if (contactRepository.existsBySecondarycontactnumber(contact2.getSecondarycontactnumber())) {
+	                    throw new RuntimeException(
+	                        " Secondary Phone number already exists: " + contact.getSecondarycontactnumber());
+	                }
+	            }
 	        }
+		}
 	    }
 	   
 	    if (patient.getIdentifications() != null && !patient.getIdentifications().isEmpty()) {
