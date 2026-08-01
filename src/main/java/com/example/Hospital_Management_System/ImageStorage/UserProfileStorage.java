@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class StorageService implements SupabaseStorageService {
+public class UserProfileStorage {
 
-    @Value("${supabase.url}")
+	@Value("${supabase.url}")
     private String supabaseUrl;
 
     @Value("${supabase.bucket}")
@@ -25,7 +25,7 @@ public class StorageService implements SupabaseStorageService {
     @Value("${supabase.service.key}")
     private String serviceKey;
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    public String uploadProfileImage(MultipartFile file) throws IOException {
 
         String originalFileName = file.getOriginalFilename();
 
@@ -34,7 +34,7 @@ public class StorageService implements SupabaseStorageService {
 
         String fileName = UUID.randomUUID() + "_" + safeFileName;
 
-        String objectPath = "Parent_identification/" + fileName;
+        String objectPath = "profile-images/" + fileName;
 
         String encodedObjectPath = URLEncoder.encode(objectPath, StandardCharsets.UTF_8)
                 .replace("+", "%20")
@@ -69,7 +69,7 @@ public class StorageService implements SupabaseStorageService {
                         + bucketName
                         + "/"
                         + encodedObjectPath;
-
+//            	 String imageUrl="";
                 return imageUrl;
             }
 
@@ -85,44 +85,45 @@ public class StorageService implements SupabaseStorageService {
         }
     }
 
-    @Override
-    public void deleteImage(String imageUrl) throws IOException {
+//    @Override
+//    public void deleteImage(String imageUrl) throws IOException {
+//
+//        if (imageUrl == null || imageUrl.isBlank()) {
+//            return;
+//        }
+//
+//
+//        String prefix = supabaseUrl + "/storage/v1/object/public/" + bucketName + "/";
+//
+//        if (!imageUrl.startsWith(prefix)) {
+//            throw new RuntimeException("Invalid Supabase image URL: " + imageUrl);
+//        }
+//
+//        String objectPath = imageUrl.substring(prefix.length());
+//        String deleteUrl = supabaseUrl
+//                + "/storage/v1/object/"
+//                + bucketName
+//                + "/"
+//                + objectPath;
+//
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .uri(URI.create(deleteUrl))
+//                .header("Authorization", "Bearer " + serviceKey)
+//                .header("apikey", serviceKey)
+//                .DELETE()
+//                .build();
+//
+//        try {
+//            HttpResponse<String> response = HttpClient.newHttpClient()
+//                    .send(request, HttpResponse.BodyHandlers.ofString());
+//
+//            System.out.println("Delete Status : " + response.statusCode());
+//            System.out.println("Delete Response : " + response.body());
+//
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            throw new RuntimeException(e);
+//        }
+//    }
 
-        if (imageUrl == null || imageUrl.isBlank()) {
-            return;
-        }
-
-
-        String prefix = supabaseUrl + "/storage/v1/object/public/" + bucketName + "/";
-
-        if (!imageUrl.startsWith(prefix)) {
-            throw new RuntimeException("Invalid Supabase image URL: " + imageUrl);
-        }
-
-        String objectPath = imageUrl.substring(prefix.length());
-        String deleteUrl = supabaseUrl
-                + "/storage/v1/object/"
-                + bucketName
-                + "/"
-                + objectPath;
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(deleteUrl))
-                .header("Authorization", "Bearer " + serviceKey)
-                .header("apikey", serviceKey)
-                .DELETE()
-                .build();
-
-        try {
-            HttpResponse<String> response = HttpClient.newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Delete Status : " + response.statusCode());
-            System.out.println("Delete Response : " + response.body());
-
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        }
-    }
 }

@@ -1,0 +1,25 @@
+package com.example.Hospital_Management_System.Enum;
+
+public enum Specialization {
+
+    GENERAL_MEDICINE,
+    CARDIOLOGY,
+    NEUROLOGY,
+    ORTHOPEDICS,
+    PEDIATRICS,
+    GYNECOLOGY,
+    DERMATOLOGY,
+    OPHTHALMOLOGY,
+    ENT,
+    PSYCHIATRY,
+    RADIOLOGY,
+    ANESTHESIOLOGY,
+    ONCOLOGY,
+    UROLOGY,
+    NEPHROLOGY,
+    GASTROENTEROLOGY,
+    PULMONOLOGY,
+    ENDOCRINOLOGY,
+    EMERGENCY_MEDICINE,
+    GENERAL_SURGERY
+}
