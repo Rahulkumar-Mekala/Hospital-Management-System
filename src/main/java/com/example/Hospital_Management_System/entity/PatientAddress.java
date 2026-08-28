@@ -3,8 +3,6 @@ package com.example.Hospital_Management_System.entity;
 import java.util.UUID;
 
 import com.example.Hospital_Management_System.Enum.AddressType;
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
