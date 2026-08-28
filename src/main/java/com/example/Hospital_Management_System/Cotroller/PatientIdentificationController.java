@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Hospital_Management_System.Enum.IdentificationType;
-import com.example.Hospital_Management_System.ImageStorage.SupabaseStorageService;
 import com.example.Hospital_Management_System.Service.Patient_IdentificationService;
 import com.example.Hospital_Management_System.dto.PatientIdentificationRecord;
 import com.example.Hospital_Management_System.entity.Patient_Identification;
