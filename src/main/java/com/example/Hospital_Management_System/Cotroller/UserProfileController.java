@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.Hospital_Management_System.Enum.Qualification;
 import com.example.Hospital_Management_System.Enum.Role;
 import com.example.Hospital_Management_System.Enum.Specialization;
+import com.example.Hospital_Management_System.Service.UserService;
 import com.example.Hospital_Management_System.ServiceImpl.UserProfileImpl;
 import com.example.Hospital_Management_System.Token.JwtService;
 import com.example.Hospital_Management_System.dto.Chang_Old_PasswordRequest;
@@ -40,13 +41,14 @@ public class UserProfileController {
 
     private final UserProfileImpl userProfileService;
     private final JwtService jwtService;
+    
+   
 
-  
-
-    public UserProfileController(UserProfileImpl userProfileService, JwtService jwtService) {
+	public UserProfileController(UserProfileImpl userProfileService, JwtService jwtService) {
 		super();
 		this.userProfileService = userProfileService;
 		this.jwtService = jwtService;
+		
 	}
 
 	@PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -78,6 +80,23 @@ public class UserProfileController {
 
         return ResponseEntity.ok("OTP sent successfully to your email.");
     }
+	
+	@PostMapping("/verify-otp")
+	public ResponseEntity<String> verifyOtp(
+	        @RequestBody VerifyOtpRequest request) {
+
+	    String response = userProfileService.verifyOtp(
+	            request.getEmail(),
+	            request.getOtp()
+	    );
+
+	    if ("Email verified successfully.".equals(response)) {
+	        return ResponseEntity.ok(response);
+	    }
+
+	    return ResponseEntity.badRequest().body(response);
+	}
+
     
     @PostMapping("/login")
     public ResponseEntity<LoginResponce> login(@RequestBody LoginRequest request) {

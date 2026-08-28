@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Hospital_Management_System.ImageStorage.StorageService;
-import com.example.Hospital_Management_System.ImageStorage.SupabaseStorageService;
 import com.example.Hospital_Management_System.Repository.PatientIdentificationRepository;
 import com.example.Hospital_Management_System.Repository.PatientRepository;
 import com.example.Hospital_Management_System.Service.Patient_IdentificationService;

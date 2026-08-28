@@ -1,13 +1,13 @@
 package com.example.Hospital_Management_System.ServiceImpl;
 
 import java.io.IOException;
-import java.io.ObjectInputFilter.Status;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
+
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -114,6 +114,7 @@ public class UserProfileImpl implements UserProfile  {
 
 	    return "Email verified successfully.";
 	}
+	
 	
 	@Override
 	public LoginResponce login(String email, String password) {
