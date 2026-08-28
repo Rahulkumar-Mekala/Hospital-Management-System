@@ -50,36 +50,40 @@ public class UserProfileController {
 		this.jwtService = jwtService;
 		
 	}
+@PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<String> registerUser(
+        @RequestParam String firstName,
+        @RequestParam String lastName,
+        @RequestParam String email,
+        @RequestParam String password,
+        @RequestParam String phone,
+        @RequestParam Role role,
+        @RequestParam(required = false) Qualification qualification,
+        @RequestParam(required = false) Specialization specialization,
+        @RequestPart(value = "profile", required = false) MultipartFile profile)
+        throws IOException {
 
-	@PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> registerUser(
+    System.out.println("Registration started for: " + email);
 
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam String email,
-            @RequestParam String password,
-            @RequestParam String phone,
-            @RequestParam Role role,
-            @RequestParam(required = false) Qualification qualification,
-            @RequestParam(required = false) Specialization specialization,
-            @RequestPart(value = "profile", required = false) MultipartFile profile)
-            throws IOException {
+    User user = new User();
 
-        User user = new User();
+    user.setFirstName(firstName);
+    user.setLastName(lastName);
+    user.setEmail(email);
+    user.setPassword(password);
+    user.setPhone(phone);
+    user.setRole(role);
+    user.setQualification(qualification);
+    user.setSpecialization(specialization);
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setPhone(phone);
-        user.setRole(role);
-        user.setQualification(qualification);
-        user.setSpecialization(specialization);
+    System.out.println("Calling saveProfile...");
 
-        userProfileService.saveProfile(user, profile);
+    userProfileService.saveProfile(user, profile);
 
-        return ResponseEntity.ok("OTP sent successfully to your email.");
-    }
+    System.out.println("saveProfile completed successfully.");
+
+    return ResponseEntity.ok("OTP sent successfully to your email.");
+}
 	
 	@PostMapping("/verify-otp")
 	public ResponseEntity<String> verifyOtp(
